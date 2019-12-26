@@ -1,0 +1,35 @@
+﻿@model LibraryManagement.Models.Branch.BranchDetailModel
+@{
+    ViewBag.Title = "Insert a Patron";
+}
+<div class="container content">
+    <div class="header clearfix detailHeading">
+        <h3 class="text-muted">@ViewBag.Title</h3>
+        <hr />
+        <div class="jumbotron">
+            <div class="row">
+                <div class="col-md-5">
+                    <div>
+                        <h3 class="">@Model.Name</h3>
+                        <img src="@Model.ImageUrl" class="detailImageBrach" />
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <form asp-action="AddAsset">
+                        <input type="hidden" asp-for="Id" />
+                        <div class="form-group col-md-5">                             
+                            <div class="input-group-sm">
+                                <label>Please insert a Asset ID.</label>
+                                <input asp-for="AssetId" class="form-control" type="number"/>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <input type="submit" class="btn btn-info btn-sm" value="Insert Asset">
+                            <a asp-action="Index" asp-controller="Branch" class="btn btn-secondary btn-sm">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

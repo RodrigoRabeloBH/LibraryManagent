@@ -1,0 +1,79 @@
+﻿@model LibraryManagement.Models.Patron.PatronDetailModel
+
+@{
+    ViewData["Title"] = "Patron Information";
+}
+
+<div class="container content">
+    <h2>@ViewData["Title"]</h2>
+    <hr />
+    <div class="jumbotron">
+        <div class="row">
+            <div class="col-md-4">
+                <div>
+                    <h4>@Model.FullName</h4>
+                    <div>
+                        <p class="text-muted">Library Card Id: @Model.LibraryCardId</p>
+                        <p class="text-muted">Address: @Model.Address</p>
+                        <p class="text-muted">Telephone: @Model.Telephone</p>
+                        <p class="text-muted">Member Since: @Model.MemberSince.ToString("dd-MM-yy")</p>
+                        <p class="text-muted">Home Library: @Model.HomeLibraryBranch</p>
+                        @if (Model.OverdueFees > 0)
+                        {
+                            <p class="text-muted">Current Fees Due: <span class="text-danger">$@Model.OverdueFees</span></p>
+                        }
+                        else
+                        {
+                            <p class="text-muted">No Fees Currently Due</p>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <h4>Currently Checked Out</h4>
+                @if (Model.Checkouts.Any())
+                {
+                    <div>
+                        @foreach (var checkout in Model.Checkouts)
+                        {
+                            <p class="text-muted">
+                                @checkout.LibraryAsset.Title
+                            </p>
+                            <p class="text-muted">
+                                Since: @checkout.Since.ToString("dd-MM-yy HH:mm")
+                            </p>
+                            <p class="text-muted">
+                                Until: @checkout.Until.ToString("dd-MM-yy HH:mm")
+                            </p>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p class="text-muted"> No items currently checked out.</p>
+                }
+            </div>
+            <div class="col-md-4">
+                <h4>Currently On Hold</h4>
+                @if (Model.Holds.Any())
+                {
+                    <div>
+                        @foreach (var hold in Model.Holds)
+                        {
+                            <p class="text-muted">
+                                Book: @hold.LibraryAsset.Title  | Placed: @hold.HoldPlaced.ToString("dd-MM-yy")
+                            </p>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p class="text-muted">
+                        No items on hold.
+                    </p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Lakeview LSD";
+}
+
+<div id="showcase" class="d-flex align-items-center justify-content-center">
+    @{
+        if (DateTime.Now.Hour > 12 && DateTime.Now.Hour < 18)
+        {
+
+            <h2 class="mb-4 text-light p-2 bg-dark rounded">
+                Good Afternoon!
+            </h2>
+        }
+        else if (DateTime.Now.Hour < 12)
+        {
+            <h2 class="mb-4 text-light p-2 bg-dark rounded">
+                Good Morning!
+            </h2>
+        }
+        else
+        {
+            <h2 class="mb-4 text-light p-2 bg-dark rounded">
+                Good Evening!
+            </h2>
+        }
+    }
+</div>
