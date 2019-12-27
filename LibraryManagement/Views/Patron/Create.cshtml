@@ -1,0 +1,76 @@
+﻿@model LibraryManagement.Models.Patron.PatronDetailModel
+
+@{
+    ViewData["Title"] = "Create Patron";
+}
+<div class="container content">
+    <h3>@ViewData["Title"]</h3>
+    <hr />
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-6 mb-4 card">
+            <form asp-action="Create" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="FirstName" class="control-label"></label>
+                    <input asp-for="FirstName" class="form-control" />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="LastName" class="control-label"></label>
+                    <input asp-for="LastName" class="form-control" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Address" class="control-label"></label>
+                    <input asp-for="Address" class="form-control" />
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Image" class="control-label"></label>
+                    <div class="custom-file">
+                        <input asp-for="Image" name="image" class="form-control custom-file-input" style="cursor:pointer" />
+                        <label class="custom-file-label">Choose File</label>
+                    </div>
+                    <span asp-validation-for="Image" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="DateOfBirth" class="control-label"></label>
+                    <input asp-for="DateOfBirth" class="form-control" />
+                    <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Telephone" class="control-label"></label>
+                    <input asp-for="Telephone" class="form-control" />
+                    <span asp-validation-for="Telephone" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="LibraryCardId" class="control-label"></label>
+                    <input asp-for="LibraryCardId" class="form-control" />
+                    <span asp-validation-for="LibraryCardId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="HomeLibraryBranch" class="control-label"></label>
+                    <input asp-for="HomeLibraryBranch" class="form-control" />
+                    <span asp-validation-for="HomeLibraryBranch" class="text-danger"></span>
+                </div>
+                <div class="form-group text-center">
+                    <input type="submit" value="Create" class="btn btn-primary btn-sm" />
+                    <a asp-action="Index" asp-controller="Patron" class="btn btn-secondary text-white btn-sm">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        var input = document.querySelector('.custom-file-input');
+        input.addEventListener("change", ChageName)
+        function ChageName() {
+            var filename = input.value;
+            document.querySelector('.custom-file-label').innerHTML = filename.substring(filename.lastIndexOf("\\") + 1);
+        }
+    </script>
+}

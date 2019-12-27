@@ -145,3 +145,6 @@ C:\Dev\LibraryManagementSystem_\LibraryManagement\obj\Debug\netcoreapp2.2\Librar
 C:\Dev\LibraryManagementSystem_\LibraryManagement\obj\Debug\netcoreapp2.2\LibraryManagement.csproj.CopyComplete
 C:\Dev\LibraryManagementSystem_\LibraryManagement\obj\Debug\netcoreapp2.2\LibraryManagement.dll
 C:\Dev\LibraryManagementSystem_\LibraryManagement\obj\Debug\netcoreapp2.2\LibraryManagement.pdb
+C:\Dev\LibraryManagement\LibraryManagement\obj\Debug\netcoreapp2.2\Razor\Views\Patron\Create.cshtml.g.cs
+C:\Dev\LibraryManagement\LibraryManagement\obj\Debug\netcoreapp2.2\Razor\Views\Patron\Edit.cshtml.g.cs
+C:\Dev\LibraryManagement\LibraryManagement\obj\Debug\netcoreapp2.2\Razor\Views\Patron\Delete.cshtml.g.cs

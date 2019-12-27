@@ -25,22 +25,40 @@
                     <ul class="navbar-nav ">
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Catalog" asp-action="Index">Catalog</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Patron" asp-action="Index">Patron</a>
-                        </li>
+                        </li>                      
                         <li class="nav-item">
                             <div class="dropdown">
                                 <a id="dropdownMenuLink" data-toggle="dropdown" class="nav-link text-light" href="#">
                                     Branch
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Branch" asp-action="Index">View Branches</a>
+                                    <a class="nav-link text-dark" asp-controller="Branch" asp-action="Index">View Branches</a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Branch" asp-action="Create">Add a Branch</a>
+                                    <a class="nav-link text-dark" asp-controller="Branch" asp-action="Create">Add a Branch</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <div class="dropdown">
+                                <a id="dropdownMenuLink" data-toggle="dropdown" class="nav-link text-light" href="#">
+                                    Patron
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <a class="nav-link text-dark" asp-controller="Patron" asp-action="Index">View Patrons</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="nav-link text-dark" asp-controller="Patron" asp-action="Create">Add a Patron</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <div class="dropdown">
+                                <a id="dropdownMenuLink" data-toggle="dropdown" class="nav-link text-light" href="#">
+                                    Catalog
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <a class="nav-link text-dark" asp-controller="Catalog" asp-action="Index">View Catalogs</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="nav-link text-dark" asp-controller="Catalog" asp-action="Create" style="display:none">Add an Asset</a>
                                 </div>
                             </div>
                         </li>

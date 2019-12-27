@@ -194,6 +194,8 @@ namespace LibraryData.Migrations
 
                     b.Property<int?>("HomeLibraryBranchId");
 
+                    b.Property<string>("ImageUrl");
+
                     b.Property<string>("LastName");
 
                     b.Property<int?>("LibraryCardId");

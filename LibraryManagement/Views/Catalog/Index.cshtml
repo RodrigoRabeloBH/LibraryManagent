@@ -12,6 +12,7 @@
                     <th>Title</th>
                     <th>Author / Directot</th>
                     <th>Dewey Call Number</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -26,6 +27,17 @@
                         <td class="">@asset.Title</td>
                         <td class="">@asset.AuthorOrDirector</td>
                         <td class="">@asset.DeweyCallNumber</td>
+                        <td class="d-flex justify-content-end">
+                            <a asp-action="Detail" asp-controller="Catalog" asp-route-id="@asset.Id" class="text-info px-2">
+                                <i class="fas fa-search" data-toggle="tooltip" data-placement="top" title="Detail"></i>
+                            </a>
+                            <a asp-action="Edit" asp-controller="Catalog" asp-route-id="@asset.Id" class="text-success px-2">
+                                <i class="fas fa-edit" data-toggle="tooltip" data-placement="top" title="Edit"></i>
+                            </a>
+                            <a asp-action="Delete" asp-controller="Catalog" asp-route-id="@asset.Id" class="text-danger px-2">
+                                <i class="fas fa-trash-alt" data-toggle="tooltip" data-placement="top" title="Remove"></i>
+                            </a>
+                        </td>
                     </tr>
                 }
             </tbody>

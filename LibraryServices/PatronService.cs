@@ -19,6 +19,18 @@ namespace LibraryServices
             _context.SaveChanges();
         }
 
+        public void Delete(Patron patron)
+        {
+            _context.Patrons.Remove(patron);
+            _context.SaveChanges();
+        }
+
+        public void Edit(Patron patron)
+        {
+            _context.Patrons.Update(patron);
+            _context.SaveChanges();
+        }
+
         public Patron Get(int id)
         {
             return GetAll().FirstOrDefault(p => p.Id == id);
@@ -31,7 +43,6 @@ namespace LibraryServices
                 .Include(p => p.HomeLibraryBranch)
                 .ToList();
         }
-
         public IEnumerable<CheckoutHistory> GetCheckoutHistories(int patronId)
         {
             int cardId = Get(patronId).LibraryCard.Id;
