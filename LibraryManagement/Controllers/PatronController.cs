@@ -15,11 +15,13 @@ namespace LibraryManagement.Controllers
     {
         private readonly IPatron _patronService;
         private readonly IHostingEnvironment _env;
+        private readonly IBranch _branchService;
 
-        public PatronController(IPatron patronService, IHostingEnvironment env)
+        public PatronController(IPatron patronService, IHostingEnvironment env, IBranch branchService)
         {
             _patronService = patronService;
             _env = env;
+            _branchService = branchService;
         }
         public IActionResult Index()
         {
@@ -46,45 +48,41 @@ namespace LibraryManagement.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            var branches = _branchService.GetAll();
+
+            var model = new PatronDetailModel { Branches = branches };
+
+            return View(model);
         }
 
         [HttpPost]
         public IActionResult Create(PatronDetailModel model)
         {
+            if (!ModelState.IsValid) return View(model);
+
+            var libraryCard = new LibraryCard();
+
+            var branch = _branchService.GetById(model.LibraryBranchId);
+
             string uniqueName = Guid.NewGuid() + "_" + model.Image.FileName;
-            string uploadFolder = Path.Combine(_env.WebRootPath, "Images/patrons");
-            string filePath = Path.Combine(uploadFolder, uniqueName);
-            string imageUrl = $"/Images/patrons/{uniqueName}";
 
-            if (ModelState.IsValid)
+            UploadImage(model, uniqueName);
+
+            var patron = new Patron
             {
-                if (model.Image != null)
-                {
-                    using (var stream = new FileStream(filePath, FileMode.OpenOrCreate))
-                    {
-                        model.Image.CopyTo(stream);
-                    }
-                }
-
-                var patron = new Patron
-                {
-                    Address = model.Address,
-                    DateOfBirth = model.DateOfBirth,
-                    FirstName = model.FirstName,
-                    LastName = model.LastName,
-                    TelephoneNumber = model.Telephone,
-                    ImageUrl = imageUrl
-                };
-
-                _patronService.Add(patron);
-
-                return RedirectToAction("Index");
-            }
-
-            else
-                return View(model);
+                Address = model.Address,
+                DateOfBirth = model.DateOfBirth,
+                FirstName = model.FirstName,
+                ImageUrl = uniqueName,
+                LastName = model.LastName,
+                TelephoneNumber = model.Telephone,
+                HomeLibraryBranch = branch,
+                LibraryCard = libraryCard
+            };
+            _patronService.Add(patron);
+            return RedirectToAction("Index");
         }
+
         public IActionResult Detail(int id)
         {
             var patron = _patronService.Get(id);
@@ -104,7 +102,6 @@ namespace LibraryManagement.Controllers
                 MemberSince = patron.LibraryCard.Created,
                 OverdueFees = patron.LibraryCard.Fees,
                 ImageUrl = patron.ImageUrl
-
             };
 
             return View(model);
@@ -132,38 +129,28 @@ namespace LibraryManagement.Controllers
         [HttpPost]
         public IActionResult Edit(PatronDetailModel model)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid) return View(model);
+
+            var patron = _patronService.Get(model.Id);
+
+            if (model.Image != null)
             {
                 string uniqueName = Guid.NewGuid() + "_" + model.Image.FileName;
-                string uploadFolder = Path.Combine(_env.WebRootPath, "Images/patrons");
-                string filePath = Path.Combine(uploadFolder, uniqueName);
-                string imageUrl = $"/Images/patrons/{uniqueName}";
-
-                if (model.Image != null)
-                {
-                    using (var stream = new FileStream(filePath, FileMode.OpenOrCreate))
-                    {
-                        model.Image.CopyTo(stream);
-                    }
-                }
-
-                var patron = new Patron
-                {
-                    Id = model.Id,
-                    Address = model.Address,
-                    TelephoneNumber = model.Telephone,
-                    FirstName = model.FirstName,
-                    LastName = model.LastName,
-                    DateOfBirth = model.DateOfBirth,
-                    ImageUrl = imageUrl
-                };
-
-                _patronService.Edit(patron);
-
-                return RedirectToAction("Detail", new { id = patron.Id });
+                DeleteImage(model);
+                UploadImage(model, uniqueName);
+                patron.ImageUrl = uniqueName;
             }
-            else
-                return View(model);
+
+            patron.Id = model.Id;
+            patron.FirstName = model.FirstName;
+            patron.LastName = model.LastName;
+            patron.Address = model.Address;
+            patron.DateOfBirth = model.DateOfBirth;
+            patron.TelephoneNumber = model.Telephone;
+
+            _patronService.Edit(patron);
+
+            return RedirectToAction("Detail", new { id = patron.Id });
         }
 
         [HttpGet]
@@ -174,10 +161,35 @@ namespace LibraryManagement.Controllers
         }
 
         [HttpPost]
-        public IActionResult Delete(Patron patron)
+        public IActionResult Delete(PatronDetailModel model)
         {
+            DeleteImage(model);
+            var patron = _patronService.Get(model.Id);
             _patronService.Delete(patron);
             return RedirectToAction(nameof(Index));
+        }
+
+        private void UploadImage(PatronDetailModel model, string uniqueName)
+        {
+            string uploadFolder = Path.Combine(_env.WebRootPath, "Images/patrons");
+            string path = Path.Combine(uploadFolder, uniqueName);
+
+            if (model.Image != null)
+            {
+                using (var stream = new FileStream(path, FileMode.OpenOrCreate))
+                {
+                    model.Image.CopyTo(stream);
+                }
+            }
+        }
+
+        private void DeleteImage(PatronDetailModel model)
+        {
+            var patron = _patronService.Get(model.Id);
+            var folder = Path.Combine(_env.WebRootPath, "Images/patrons");
+            var directory = new DirectoryInfo(folder);
+            FileInfo[] files = directory.GetFiles("*", SearchOption.AllDirectories);
+            foreach (var image in files) if (image.Name == patron.ImageUrl) image.Delete();
         }
     }
 }

@@ -3,7 +3,6 @@ C:\Dev\LibraryManagement\LibraryData\bin\Debug\netcoreapp2.2\LibraryData.runtime
 C:\Dev\LibraryManagement\LibraryData\bin\Debug\netcoreapp2.2\LibraryData.runtimeconfig.dev.json
 C:\Dev\LibraryManagement\LibraryData\bin\Debug\netcoreapp2.2\LibraryData.dll
 C:\Dev\LibraryManagement\LibraryData\bin\Debug\netcoreapp2.2\LibraryData.pdb
-C:\Dev\LibraryManagement\LibraryData\obj\Debug\netcoreapp2.2\LibraryData.csprojAssemblyReference.cache
 C:\Dev\LibraryManagement\LibraryData\obj\Debug\netcoreapp2.2\LibraryData.AssemblyInfoInputs.cache
 C:\Dev\LibraryManagement\LibraryData\obj\Debug\netcoreapp2.2\LibraryData.AssemblyInfo.cs
 C:\Dev\LibraryManagement\LibraryData\obj\Debug\netcoreapp2.2\LibraryData.dll

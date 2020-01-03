@@ -10,5 +10,10 @@ namespace LibraryData.Models
         public decimal Fees { get; set; }
         public DateTime Created { get; set; }     
         public virtual IEnumerable<Checkout> Checkouts { get; set; }
+
+        public LibraryCard()
+        {
+            Created = DateTime.Now;
+        }
     }
 }

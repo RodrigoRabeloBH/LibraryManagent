@@ -1,4 +1,5 @@
-﻿using LibraryData;
+﻿using AutoMapper;
+using LibraryData;
 using LibraryServices;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -29,6 +30,7 @@ namespace LibraryManagement
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddAutoMapper(typeof(Startup));
             services.AddScoped<ILibraryAsset, LibraryAssetService>();
             services.AddScoped<ICheckout, CheckoutService>();
             services.AddScoped<IPatron, PatronService>();

@@ -9,8 +9,7 @@ namespace LibraryManagement.Models.Patron
     public class PatronDetailModel
     {
         public int Id { get; set; }
-
-        [Required(ErrorMessage = "{0} is required")]
+        public int LibraryBranchId { get; set; }
         public int LibraryCardId { get; set; }
 
         [Display(Name = "First Name")]
@@ -32,25 +31,21 @@ namespace LibraryManagement.Models.Patron
         [DisplayFormat(DataFormatString = "{0: dd/MM/yyyy}")]
         public DateTime DateOfBirth { get; set; }
 
-        [Required(ErrorMessage = "{0} is required")]
+
         public IFormFile Image { get; set; }
 
-        public string FullName
-        {
-            get { return FirstName + " " + LastName; }
 
-        }
-
-     
         [Required(ErrorMessage = "{0} is required")]
         [StringLength(60, MinimumLength = 5, ErrorMessage = " {0} size should be between {2} and {1}")]
         public string Address { get; set; }
 
-        [Required(ErrorMessage = "{0} is required")]    
+        [Required(ErrorMessage = "{0} is required")]
         public string Telephone { get; set; }
 
-        [Required(ErrorMessage = "{0} is required")]
+        [Display(Name = "Home Library Branch")]
         public string HomeLibraryBranch { get; set; }
+
+        public LibraryCard LibraryCard { get; set; }
 
         public decimal OverdueFees { get; set; }
 
@@ -61,5 +56,12 @@ namespace LibraryManagement.Models.Patron
         public IEnumerable<CheckoutHistory> CheckoutHistories { get; set; }
 
         public IEnumerable<Hold> Holds { get; set; }
+        public IEnumerable<LibraryBranch> Branches { get; set; }
+
+        public string FullName
+        {
+            get { return FirstName + " " + LastName; }
+
+        }
     }
 }
