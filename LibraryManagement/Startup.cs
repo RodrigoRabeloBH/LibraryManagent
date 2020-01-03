@@ -35,6 +35,7 @@ namespace LibraryManagement
             services.AddScoped<ICheckout, CheckoutService>();
             services.AddScoped<IPatron, PatronService>();
             services.AddScoped<IBranch, BranchService>();
+            services.AddScoped<ILibraryCard, LibraryCardService>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddDbContext<LibraryContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("LibraryConnection")));
 

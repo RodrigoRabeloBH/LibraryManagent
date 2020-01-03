@@ -27,3 +27,4 @@ C:\Dev\LibraryManagementSystem_\LibraryData\obj\Debug\netcoreapp2.2\LibraryData.
 C:\Dev\LibraryManagementSystem_\LibraryData\obj\Debug\netcoreapp2.2\LibraryData.AssemblyInfo.cs
 C:\Dev\LibraryManagementSystem_\LibraryData\obj\Debug\netcoreapp2.2\LibraryData.dll
 C:\Dev\LibraryManagementSystem_\LibraryData\obj\Debug\netcoreapp2.2\LibraryData.pdb
+C:\Dev\LibraryManagement\LibraryData\obj\Debug\netcoreapp2.2\LibraryData.csprojAssemblyReference.cache

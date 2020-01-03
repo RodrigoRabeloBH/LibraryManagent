@@ -31,7 +31,7 @@
                     <span asp-validation-for="Address" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <img src="~/Images/patrons/@Model.ImageUrl" alt="@Model.FullName"  class="imageCell img-thumbnail"/>
+                    <img src="~/Images/patrons/@Model.ImageUrl" alt="@Model.FullName" class="imageCell img-thumbnail" />
                 </div>
                 <div class="form-group">
                     <label asp-for="Image" class="control-label"></label>
@@ -48,8 +48,8 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="Telephone" class="control-label"></label>
-                    <input asp-for="Telephone" class="form-control" />
-                    <span asp-validation-for="Telephone" class="text-danger"></span>
+                    <input asp-for="Telephone" class="form-control phone" />
+                    <span asp-validation-for="Telephone" class="text-danger msg"></span>
                 </div>
                 <div class="form-group">
                     <input asp-for="LibraryCardId" class="form-control" type="hidden" />
@@ -73,10 +73,23 @@
 
     <script>
         var input = document.querySelector('.custom-file-input');
-        input.addEventListener("change", ChageName)
+        var phone = document.querySelector(".phone");
+        var span = document.querySelector(".msg");
+
+        input.addEventListener("change", ChageName);
+        phone.addEventListener("blur", ValidatePhone);
+
         function ChageName() {
             var filename = input.value;
             document.querySelector('.custom-file-label').innerHTML = filename.substring(filename.lastIndexOf("\\") + 1);
+        }
+
+        function ValidatePhone() {
+            var re = /^[0-9]{6,8}(-[0-9]{4})$/;
+            if (!re.test(phone.value)) {
+                span.textContent = "This field must be xxxxxx-xxxx or xxxxxxxx-xxxx ";
+                phone.value = "";
+            }
         }
     </script>
 }

@@ -2,7 +2,6 @@
 using LibraryData.Models;
 using LibraryManagement.Models.Patron;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -16,12 +15,14 @@ namespace LibraryManagement.Controllers
         private readonly IPatron _patronService;
         private readonly IHostingEnvironment _env;
         private readonly IBranch _branchService;
+        private readonly ILibraryCard _cardService;
 
-        public PatronController(IPatron patronService, IHostingEnvironment env, IBranch branchService)
+        public PatronController(IPatron patronService, IHostingEnvironment env, IBranch branchService, ILibraryCard cardService)
         {
             _patronService = patronService;
             _env = env;
             _branchService = branchService;
+            _cardService = cardService;
         }
         public IActionResult Index()
         {
@@ -164,8 +165,13 @@ namespace LibraryManagement.Controllers
         public IActionResult Delete(PatronDetailModel model)
         {
             DeleteImage(model);
+
             var patron = _patronService.Get(model.Id);
+
+            _cardService.Delete(patron.LibraryCard.Id);
+
             _patronService.Delete(patron);
+
             return RedirectToAction(nameof(Index));
         }
 

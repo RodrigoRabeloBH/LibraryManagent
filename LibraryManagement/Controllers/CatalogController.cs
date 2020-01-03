@@ -10,10 +10,12 @@ namespace LibraryManagement.Controllers
     {
         private readonly ILibraryAsset _assetServices;
         private readonly ICheckout _checkoutServices;
-        public CatalogController(ILibraryAsset assetServices, ICheckout checkoutServices)
+        private readonly ILibraryCard _cardServices;
+        public CatalogController(ILibraryAsset assetServices, ICheckout checkoutServices, ILibraryCard cardServices)
         {
             _assetServices = assetServices;
             _checkoutServices = checkoutServices;
+            _cardServices = cardServices;
         }
 
         [HttpGet]
@@ -65,7 +67,7 @@ namespace LibraryManagement.Controllers
                 CurrentLocation = asset.Location.Name,
                 ISBN = _assetServices.GetIsbn(id),
                 PatronName = _checkoutServices.GetCurrentCheckoutPatron(asset.Id)
-            };          
+            };
             return View(model);
         }
 
@@ -121,15 +123,33 @@ namespace LibraryManagement.Controllers
         [HttpPost]
         public IActionResult PlaceCheckout(int assetId, int libraryCardId)
         {
-            _checkoutServices.CheckOutItem(assetId, libraryCardId);
-            return RedirectToAction("Detail", new { id = assetId });
-        }     
+            if (ValidateLibraryCard(libraryCardId))
+            {
+                _checkoutServices.CheckOutItem(assetId, libraryCardId);
+                return RedirectToAction("Detail", new { id = assetId });
+            }
+
+            return RedirectToAction("Checkout", new { id = assetId });
+        }
 
         [HttpPost]
         public IActionResult PlaceHold(int assetId, int libraryCardId)
         {
-            _checkoutServices.PlaceHold(assetId, libraryCardId);
-            return RedirectToAction("Detail", new { id = assetId });
+            if (ValidateLibraryCard(libraryCardId))
+            {
+                _checkoutServices.PlaceHold(assetId, libraryCardId);
+                return RedirectToAction("Detail", new { id = assetId });
+            }
+            return RedirectToAction("Hold", new { id = assetId });
+        }
+
+        private bool ValidateLibraryCard(int libraryCardId)
+        {
+            var libraryCard = _cardServices.Get(libraryCardId);
+
+            if (libraryCard != null) return true;
+
+            return false;
         }
     }
 }
