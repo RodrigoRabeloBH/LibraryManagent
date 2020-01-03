@@ -79,7 +79,7 @@ namespace LibraryManagement.Controllers
 
                 _patronService.Add(patron);
 
-                return RedirectToAction("Detail", new { id = patron.Id });
+                return RedirectToAction("Index");
             }
 
             else

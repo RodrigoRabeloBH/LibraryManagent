@@ -32,9 +32,6 @@ namespace LibraryManagement.Models.Branch
         [Required(ErrorMessage = "{0} is required")]
         public string Description { get; set; }
         public string ImageUrl { get; set; }     
-
-        [Required(ErrorMessage = "{0} is required")]
-        [Display(Name = "Upload Image")]
         public IFormFile Image { get; set; }
         public decimal TotalAssetsValue { get; set; }
         public string IsOpen { get; set; }

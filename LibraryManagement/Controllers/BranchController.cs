@@ -78,48 +78,62 @@ namespace LibraryManagement.Controllers
 
             return View(model);
         }
+
         [HttpPost]
-        public IActionResult Edit(BranchDetailModel model)
+        public IActionResult Edit(BranchDetailModel branchModel)
         {
+            var branch = _branchServices.GetById(branchModel.Id);
 
-            string uniqueName = Guid.NewGuid() + "_" + model.Image.FileName;
-            string uploadFolder = Path.Combine(_env.WebRootPath, "Images/branches");
-            string filePath = Path.Combine(uploadFolder, uniqueName);
-            string imageUrl = $"/Images/branches/{uniqueName}";
+            if (!ModelState.IsValid) return View(branchModel);
+            
+            branch.Name = branchModel.Name;
+            branch.Address = branchModel.Address;
+            branch.Telephone = branchModel.Telephone;
+            branch.Description = branchModel.Description;
+            branch.OpenedDate = branchModel.OpenedDate;
 
-            using (var stream = new FileStream(filePath, FileMode.OpenOrCreate))
+            if (branchModel.Image != null)
             {
-                model.Image.CopyTo(stream);
+                string uniqueName = Guid.NewGuid() + "_" + branchModel.Image.FileName;
+
+                DeleteImage(branchModel);
+
+                UploadImage(branchModel, uniqueName);
+
+                branch.ImageUrl = uniqueName;
             }
 
-            if (model != null)
-            {
-                var branch = new LibraryBranch
-                {
-                    Id = model.Id,
-                    Address = model.Address,
-                    Description = model.Description,
-                    Name = model.Name,
-                    OpenedDate = model.OpenedDate,
-                    Telephone = model.Telephone,
-                    ImageUrl = imageUrl
-                };
-                _branchServices.Edit(branch);
-                return RedirectToAction("Index", new { branch.Id });
-            }
-            else
-                return View(model);
+            _branchServices.Edit(branch);
+
+            return RedirectToAction("Detail", new { branch.Id });
         }
         public IActionResult Delete(int id)
         {
             var branch = _branchServices.GetById(id);
-            return View(branch);
+
+            var model = new BranchDetailModel
+            {
+                Id = branch.Id,
+                Address = branch.Address,
+                Description = branch.Description,
+                Name = branch.Name,
+                OpenedDate = branch.OpenedDate,
+                Telephone = branch.Telephone,
+                ImageUrl = branch.ImageUrl
+            };
+
+            return View(model);
         }
 
         [HttpPost]
-        public IActionResult Delete(LibraryBranch branch)
+        public IActionResult Delete(BranchDetailModel model)
         {
+            DeleteImage(model);
+
+            var branch = _branchServices.GetById(model.Id);
+
             _branchServices.Delete(branch);
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -131,35 +145,26 @@ namespace LibraryManagement.Controllers
         [HttpPost]
         public IActionResult Create(BranchDetailModel model)
         {
+            if (!ModelState.IsValid) return View(model);
+
             string uniqueName = Guid.NewGuid() + "_" + model.Image.FileName;
-            string uploadFolder = Path.Combine(_env.WebRootPath, "Images/branches");
-            string filePath = Path.Combine(uploadFolder, uniqueName);
-            string imageUrl = $"/Images/branches/{uniqueName}";
 
-            using (var stream = new FileStream(filePath, FileMode.OpenOrCreate))
+            UploadImage(model, uniqueName);
+
+            var branch = new LibraryBranch
             {
-                model.Image.CopyTo(stream);
-            }
+                Id = model.Id,
+                Address = model.Address,
+                Description = model.Description,
+                Name = model.Name,
+                OpenedDate = model.OpenedDate,
+                Telephone = model.Telephone,
+                ImageUrl = uniqueName
+            };
 
-            if (model != null)
-            {
-                var branch = new LibraryBranch
-                {
-                    Id = model.Id,
-                    Address = model.Address,
-                    Description = model.Description,
-                    Name = model.Name,
-                    OpenedDate = model.OpenedDate,
-                    Telephone = model.Telephone,
-                    ImageUrl = imageUrl
-                };
+            _branchServices.Add(branch);
 
-                _branchServices.Add(branch);
-                return RedirectToAction("Detail", new { id = branch.Id });
-            }
-
-            else
-                return View(model);
+            return RedirectToAction("Detail", new { id = branch.Id });
         }
 
         [HttpGet]
@@ -209,6 +214,33 @@ namespace LibraryManagement.Controllers
         {
             _branchServices.AddAsset(assetId, id);
             return RedirectToAction("Detail", new { id = id });
+        }
+
+        private void UploadImage(BranchDetailModel model, string imageName)
+        {
+            string uploadFolder = Path.Combine(_env.WebRootPath, "Images/branches");
+            string path = Path.Combine(uploadFolder, imageName);
+
+            if (model.Image != null)
+            {
+                using (var stream = new FileStream(path, FileMode.OpenOrCreate))
+                {
+                    model.Image.CopyTo(stream);
+                }
+            }
+        }
+
+        private void DeleteImage(BranchDetailModel model)
+        {
+            var branch = _branchServices.GetById(model.Id);
+
+            string folder = Path.Combine(_env.WebRootPath, "Images/branches");
+
+            var directory = new DirectoryInfo(folder);
+
+            FileInfo[] files = directory.GetFiles("*", SearchOption.AllDirectories);
+
+            foreach (var image in files) if (image.Name == branch.ImageUrl) image.Delete();
         }
     }
 }

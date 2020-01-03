@@ -67,7 +67,7 @@ body {
 
 .detailImageBrach {
     width: 100%;    
-    padding-bottom: 6px;
+    height: 50vh;
 }
 
 
@@ -98,8 +98,4 @@ body {
 }
 #space{
     height: 20px;
-}
-.branches{
-    width: 100%;
-    height:100%;
 }
