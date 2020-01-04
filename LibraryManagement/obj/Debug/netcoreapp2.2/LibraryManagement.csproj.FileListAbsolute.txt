@@ -149,3 +149,4 @@ C:\Dev\LibraryManagement\LibraryManagement\obj\Debug\netcoreapp2.2\Razor\Views\P
 C:\Dev\LibraryManagement\LibraryManagement\obj\Debug\netcoreapp2.2\Razor\Views\Patron\Edit.cshtml.g.cs
 C:\Dev\LibraryManagement\LibraryManagement\obj\Debug\netcoreapp2.2\Razor\Views\Patron\Delete.cshtml.g.cs
 C:\Dev\LibraryManagement\LibraryManagement\bin\Debug\netcoreapp2.2\libman.json
+C:\Dev\LibraryManagement\LibraryManagement\obj\Debug\netcoreapp2.2\Razor\Views\Book\Create.cshtml.g.cs
