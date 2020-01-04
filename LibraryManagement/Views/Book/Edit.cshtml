@@ -1,15 +1,18 @@
 ﻿@model LibraryManagement.Models.Book.BookDetailModel
 
 @{
-    ViewData["Title"] = "Create Book";
+    ViewData["Title"] = "Edit Book: " + Model.Title;
 }
 <div class="container content">
     <h3>@ViewData["Title"]</h3>
     <hr />
     <div class="row d-flex justify-content-center">
         <div class="col-md-6 mb-4 card">
-            <form asp-action="Create" enctype="multipart/form-data">
+            <form asp-action="Edit" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <input asp-for="Id" class="form-control" type="hidden" />
+                </div>
                 <div class="form-group">
                     <label asp-for="Title" class="control-label"></label>
                     <input asp-for="Title" class="form-control" />
@@ -26,6 +29,9 @@
                     <span asp-validation-for="NumberOfCopies" class="text-danger"></span>
                 </div>
                 <div class="form-group">
+                    <img src="~/Images/assets/@Model.ImageUrl" alt="@Model.ImageUrl" class="imageCell" />
+                </div>
+                <div class="form-group">
                     <label asp-for="Image" class="control-label"></label>
                     <div class="custom-file">
                         <input asp-for="Image" name="image" class="form-control custom-file-input" style="cursor:pointer" />
@@ -37,7 +43,7 @@
                     <label asp-for="Cost" class="control-label"></label>
                     <input asp-for="Cost" class="form-control cost" />
                     <span asp-validation-for="Cost" class="text-danger cost-msg"></span>
-                </div>       
+                </div>
                 <div class="form-group">
                     <label asp-for="ISBN" class="control-label"></label>
                     <input asp-for="ISBN" class="form-control isbn" />
@@ -56,7 +62,7 @@
                     <span asp-validation-for="LibraryBranchId" class="text-danger"></span>
                 </div>
                 <div class="form-group text-center">
-                    <input type="submit" value="Create" class="btn btn-primary btn-sm" />
+                    <input type="submit" value="Save" class="btn btn-primary btn-sm" />
                     <a asp-action="Index" asp-controller="Catalog" class="btn btn-secondary text-white btn-sm">Cancel</a>
                 </div>
             </form>
@@ -93,7 +99,7 @@
         }
 
         function ValidateCost() {
-            var re = /^[0-9]{1,8}(,[0-9]{2})$/;
+            var re = /^[0-9]{1,4}(,[0-9]{2})$/;
             if (!re.test(cost.value)) {
                 cost_msg.textContent = "Ex: 12,85 ";
                 cost.value = "";

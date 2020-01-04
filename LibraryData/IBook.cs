@@ -8,8 +8,8 @@ namespace LibraryData
     public interface IBook
     {
         void Add(Book book);
-        void Edit(int id);
-        void Delete(int id);
+        void Edit(Book book);
+        void Delete(Book book);
         Book Get(int id);
         Status GetStatus(int id);
         IEnumerable<Book> GetAll();

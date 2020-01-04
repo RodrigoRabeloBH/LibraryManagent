@@ -22,6 +22,7 @@ namespace LibraryManagement.Models.Book
         public string Author { get; set; }
 
         [Required(ErrorMessage = "{0} is required!")]
+        [Display(Name = "Number of Copies")]
         public int NumberOfCopies { get; set; }
 
         [Required(ErrorMessage = "{0} is required!")]
@@ -29,7 +30,7 @@ namespace LibraryManagement.Models.Book
 
         public int Year { get; set; }
         public string DeweyIndex { get; set; }
-        public decimal Cost { get; set; }
+        public string Cost { get; set; }
         public string ImageUrl { get; set; }
         public IFormFile Image { get; set; }
         public LibraryBranch Location { get; set; }

@@ -12,11 +12,15 @@ namespace LibraryManagement.Controllers
     public class BranchController : Controller
     {
         private readonly IBranch _branchServices;
+        private readonly IPatron _patronServices;
+        private readonly ILibraryAsset _assetServices;
         private readonly IHostingEnvironment _env;
 
-        public BranchController(IBranch branchServices, IHostingEnvironment env)
+        public BranchController(IBranch branchServices, IHostingEnvironment env, IPatron patronServices, ILibraryAsset assetsServices)
         {
             _branchServices = branchServices;
+            _patronServices = patronServices;
+            _assetServices = assetsServices;
             _env = env;
         }
 
@@ -85,7 +89,7 @@ namespace LibraryManagement.Controllers
             var branch = _branchServices.GetById(branchModel.Id);
 
             if (!ModelState.IsValid) return View(branchModel);
-            
+
             branch.Name = branchModel.Name;
             branch.Address = branchModel.Address;
             branch.Telephone = branchModel.Telephone;
@@ -187,8 +191,12 @@ namespace LibraryManagement.Controllers
         [HttpPost]
         public IActionResult AddPatron(int patronId, int id)
         {
-            _branchServices.AddPatron(patronId, id);
-            return RedirectToAction("Detail", new { id = id });
+            if (ValidatePatron(id, patronId))
+            {
+                _branchServices.AddPatron(patronId, id);
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("AddPatron", new { id = id });
         }
 
         [HttpGet]
@@ -212,8 +220,12 @@ namespace LibraryManagement.Controllers
         [HttpPost]
         public IActionResult AddAsset(int id, int assetId)
         {
-            _branchServices.AddAsset(assetId, id);
-            return RedirectToAction("Detail", new { id = id });
+            if (ValidateAsset(id, assetId))
+            {
+                _branchServices.AddAsset(assetId, id);
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("AddAsset", new { id = id });
         }
 
         private void UploadImage(BranchDetailModel model, string imageName)
@@ -241,6 +253,20 @@ namespace LibraryManagement.Controllers
             FileInfo[] files = directory.GetFiles("*", SearchOption.AllDirectories);
 
             foreach (var image in files) if (image.Name == branch.ImageUrl) image.Delete();
+        }
+
+        private bool ValidatePatron(int id, int patronId)
+        {
+            var patron = _patronServices.Get(patronId);
+            if (patron == null || _branchServices.GetPatrons(id).Any(p => p.Id == patronId)) return false;
+            return true;
+        }
+
+        private bool ValidateAsset(int id, int assetId)
+        {
+            var asset = _assetServices.GetById(assetId);
+            if (asset == null || _branchServices.GetAssets(id).Any(a => a.Id == assetId)) return false;
+            return true;
         }
     }
 }

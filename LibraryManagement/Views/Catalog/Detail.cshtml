@@ -14,6 +14,7 @@
             <div class="col-md-4">
                 <div>
                     <img src="~/Images/assets/@Model.ImageUrl" alt="@Model.Title" class="detailImage" />
+
                 </div>
             </div>
             <div class="col-md-4">
@@ -31,11 +32,17 @@
                             <a class="btn btn-sm btn-success" role="button" asp-controller="Catalog" asp-action="CheckIn" asp-route-id="@Model.AssetId">Check In</a>
                             <a class="btn btn-sm btn-warning" role="button" asp-controller="Catalog" asp-action="Hold" asp-route-id="@Model.AssetId">Place Hold</a>
                         </p>
+                        <p>
+                            <a class="btn btn-sm btn-secondary" asp-controller="Catalog" asp-action="Index">Back to Catalog</a>
+                        </p>
                     }
                     if (Model.Status == "Available")
                     {
                         <p>
-                            <a class="btn btn-sm btn-info" role="button" asp-controller="Catalog" asp-action="Checkout" asp-route-id="@Model.AssetId">Check Out</a>
+                            <a class="btn btn-sm btn-info" asp-controller="Catalog" asp-action="Checkout" asp-route-id="@Model.AssetId">Check Out</a>
+                        </p>
+                        <p>
+                            <a class="btn btn-sm btn-secondary" asp-controller="Catalog" asp-action="Index">Back to Catalog</a>
                         </p>
                     }
                     if (Model.Status == "Lost")
@@ -43,6 +50,9 @@
                         <p>This item has been lost. It cannot be checked out.</p>
                         <p>
                             <a class="btn btn-sm btn-danger" role="button" asp-controller="Catalog" asp-action="MarkFound" asp-route-id="@Model.AssetId">Mark Item Found</a>
+                        </p>
+                        <p>
+                            <a class="btn btn-sm btn-secondary" asp-controller="Catalog" asp-action="Index">Back to Catalog</a>
                         </p>
                     }
                 }

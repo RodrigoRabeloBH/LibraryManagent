@@ -17,7 +17,10 @@ namespace LibraryServices
         }
         public IEnumerable<Book> GetAll()
         {
-            return _context.Books.Include(b => b.Location).ToList();
+            return _context.Books
+                .Include(b => b.Location)
+                .Include(b => b.Status)
+                .ToList();
         }
         public Book Get(int id)
         {
@@ -29,14 +32,22 @@ namespace LibraryServices
             _context.SaveChanges();
         }
 
-        public void Delete(int id)
+        public void Delete(Book book)
         {
-            _context.Books.Remove(Get(id));
+            var hold = _context.Holds.FirstOrDefault(h => h.LibraryAsset.Id == book.Id);
+            if (hold != null)
+            {
+                _context.Holds.Remove(hold);
+            }
+
+            _context.Books.Remove(book);
+            _context.SaveChanges();
         }
 
-        public void Edit(int id)
+        public void Edit(Book book)
         {
-            _context.Books.Update(Get(id));
+            _context.Books.Update(book);
+            _context.SaveChanges();
         }
 
         public Status GetStatus(int id)

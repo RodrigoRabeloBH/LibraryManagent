@@ -22,6 +22,9 @@
                 <div>
                     <p class="text-muted">@Model.Description</p>
                 </div>
+                <div>
+                    <a class="btn btn-sm btn-secondary" href="">Back to Index</a>
+                </div>
             </div>
             <div class="col-md-4">
                 <table class="table">
@@ -47,3 +50,11 @@
     </div>
     <div id="space"></div>   
 </div>
+@section Scripts{
+    <script>
+        document.querySelector(".btn").addEventListener("click", function (e) {
+            history.back();        
+            e.preventDefault();
+        });
+    </script>
+}
